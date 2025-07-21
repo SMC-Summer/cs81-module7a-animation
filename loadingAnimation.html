@@ -4,35 +4,80 @@
   <meta charset="UTF-8">
   <title>Loading Animation Simulator</title>
 </head>
-<body style="font-family: monospace; text-align: center; padding-top: 100px; background-color: #f4f4f4;">
+<body style="font-family: monospace; text-align: center; padding-top: 100px; background-color: #f4f4f4; transition: background-color 0.5s ease;">
 
   <div id="loader" style="font-size: 2rem; margin-bottom: 20px;">Loading...</div>
   <div id="status">Please wait</div>
 
   <script>
+    /**
+     * This function initializes and runs the entire loading animation sequence.
+     */
     function runLoadingAnimation() {
+      // --- DOM Element Selection ---
+      // Gets the <div> element with the ID 'loader' to display the animation frames.
       const loader = document.getElementById("loader");
+      // Gets the <div> element with the ID 'status' to display the text message.
       const status = document.getElementById("status");
+      // Gets the <body> element to change its background color.
+      const body = document.body;
 
+      // --- Animation Configuration ---
+      // An array of strings that represent each frame of the animation.
       const frames = ["⏳", "⌛", ".", "..", "..."];
+      // An array of colors for the background to cycle through.
+      const bgColors = ["#f4f4f4", "#e0e0e0", "#d1d1d1", "#c2c2c2", "#b3b3b3"];
+      // 'index' tracks the current frame of the animation. It increments indefinitely.
       let index = 0;
+      // 'cycleCount' tracks how many times the animation has looped through the entire 'frames' array.
       let cycleCount = 0;
+      // This constant defines the total number of cycles before the animation stops.
       const maxCycles = 10;
+      
+      // --- Creative Idea ---
+      // Another creative idea could be to play a subtle ticking sound with each frame change
+      // and a success chime when the loading is complete, using the Web Audio API.
 
+      // --- Animation Loop ---
+      // setInterval repeatedly calls the provided function at a specified interval (500 milliseconds).
+      // This is what creates the looping behavior for our animation.
       const interval = setInterval(() => {
+        // --- DOM Update ---
+        // The text content of the 'loader' element is updated with the current animation frame.
+        // The modulo operator (%) ensures the index wraps around to the start of the 'frames' array.
         loader.textContent = frames[index % frames.length];
+        
+        // --- New Feature: Background Color Change ---
+        // The background color of the page is updated based on the current animation frame.
+        // This provides additional visual feedback that the process is ongoing.
+        body.style.backgroundColor = bgColors[index % bgColors.length];
+        
+        // Increment the index to move to the next frame in the next interval.
         index++;
+        
+        // Check if a full cycle of the animation frames has completed.
         if (index % frames.length === 0) {
+          // If a cycle is complete, increment the cycle counter.
           cycleCount++;
         }
+
+        // --- Loop Termination Condition ---
+        // Check if the number of completed cycles has reached the maximum allowed cycles.
         if (cycleCount >= maxCycles) {
+          // 'clearInterval' stops the setInterval from running further, ending the animation loop.
+          // This is crucial to prevent an infinite loop and to signal completion.
           clearInterval(interval);
+          
+          // --- Final State Update ---
+          // Update the DOM to show a success state.
           loader.textContent = "✅";
           status.textContent = "Done!";
+          body.style.backgroundColor = "#dff0d8"; // A calming green for success.
         }
-      }, 500);
+      }, 500); // The function will run every 500 milliseconds (half a second).
     }
 
+    // Start the animation when the script is loaded.
     runLoadingAnimation();
   </script>
 
