@@ -1,1 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Loading Animation Simulator</title>
+</head>
+<body style="font-family: monospace; text-align: center; padding-top: 100px; background-color: #f4f4f4;">
 
+  <div id="loader" style="font-size: 2rem; margin-bottom: 20px;">Loading...</div>
+  <div id="status">Please wait</div>
+
+  <script>
+    function runLoadingAnimation() {
+      const loader = document.getElementById("loader");
+      const status = document.getElementById("status");
+
+      const frames = ["⏳", "⌛", ".", "..", "..."];
+      let index = 0;
+      let cycleCount = 0;
+      const maxCycles = 10;
+
+      const interval = setInterval(() => {
+        loader.textContent = frames[index % frames.length];
+        index++;
+        if (index % frames.length === 0) {
+          cycleCount++;
+        }
+        if (cycleCount >= maxCycles) {
+          clearInterval(interval);
+          loader.textContent = "✅";
+          status.textContent = "Done!";
+        }
+      }, 500);
+    }
+
+    runLoadingAnimation();
+  </script>
+
+</body>
+</html>
